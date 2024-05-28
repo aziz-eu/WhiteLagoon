@@ -15,5 +15,34 @@ namespace WhiteLagoon.Infrastructure.Data
             
         }
         public DbSet<Villa> Villas { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Villa>().HasData(
+                new Villa
+                {
+                    Id = 1,
+                    Name = "Ruposhi Bangla",
+                    Description = "Ruposhi Bangla offers an exceptional stay in Dhaka, Bangladesh",
+                    Price = 100,
+                    Sqft=400,
+                    Occupancy=2,
+                    ImageUrl= "https://dummyimage.com/300",
+
+                },
+                 new Villa
+                 {
+                     Id = 2,
+                     Name = "White Hall",
+                     Description = "White Hall offers an exceptional stay in Dhaka, Bangladesh",
+                     Price = 90,
+                     Sqft = 500,
+                     Occupancy = 4,
+                     ImageUrl = "https://dummyimage.com/300",
+
+                 }
+                );
+        }
     }
 }
