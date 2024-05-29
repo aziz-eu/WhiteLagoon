@@ -11,32 +11,38 @@
 
     <div class="card-body border p-4">
 
-        <form class="row">
-
+        <form method="post" class="row">
+            @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
             <div class="p-3">
                 <div class="form-floating col-12 py-1">
                     <input asp-for="Name" class="form-control border shadow" />
                     <label asp-for="Name"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-12 py-1">
                     <input asp-for="Description" class="form-control border shadow" />
                     <label asp-for="Description"></label>
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-12 py-1">
                     <input asp-for="Price" class="form-control border shadow" />
                     <label asp-for="Price"></label>
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-12 py-1">
                     <input asp-for="Sqft" class="form-control border shadow" />
                     <label asp-for="Sqft"></label>
+                    <span asp-validation-for="Sqft" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-12 py-1">
                     <input asp-for="Occupancy" class="form-control border shadow" />
                     <label asp-for="Occupancy"></label>
+                    <span asp-validation-for="Occupancy" class="text-danger"></span>
                 </div>
                 <div class="form-floating col-12 py-1">
                     <input asp-for="ImageUrl" class="form-control border shadow" />
                     <label asp-for="ImageUrl"></label>
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
                 </div>
 
                 <div class="row pt-2">
@@ -64,3 +70,9 @@
 
     </div>
     </div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

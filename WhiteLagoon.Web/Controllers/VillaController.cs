@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
 
 namespace WhiteLagoon.Web.Controllers
@@ -19,6 +20,24 @@ namespace WhiteLagoon.Web.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Villa obj)
+        {
+            if(obj.Name == obj.Description)
+            {
+                ModelState.AddModelError("", "Villa Name and Drscription Can't be Same!");
+            }
+            if (ModelState.IsValid)
+            {
+
+                _db.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            } 
+            return View(obj);
         }
     }
 }
