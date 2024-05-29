@@ -38,13 +38,17 @@ namespace WhiteLagoon.Web.Controllers
 
                     _db.Add(obj);
                     _db.SaveChanges();
+                    TempData["success"] = "New Villa Add Successfully";
                     return RedirectToAction(nameof(Index));
+
                 }
+                TempData["error"] = "Something went Wrong";
                 return View(obj);
             }
             catch (Exception ex)
             {
-                return NotFound();
+                TempData["error"] = "Something went Wrong";
+                return View(obj);
             }
         }
 
@@ -63,13 +67,23 @@ namespace WhiteLagoon.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(Villa obj)
         {
-            if(ModelState.IsValid)
+            try
             {
-                _db.Villas.Update(obj);
-                _db.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    _db.Villas.Update(obj);
+                    _db.SaveChanges();
+                    TempData["success"] = "Villa successfully Updated";
+                    return RedirectToAction(nameof(Index));
+                }
+                TempData["error"] = "Something went Wrong";
+                return View(obj);
             }
-            return View(obj);
+            catch(Exception ex)
+            {
+                TempData["error"] = "Something went Wrong";
+                return View(obj);
+            }
         }
 
         public IActionResult Delete(int id)
@@ -95,9 +109,11 @@ namespace WhiteLagoon.Web.Controllers
 
                 _db.Villas.Remove(villa);
                 _db.SaveChanges();
+                TempData["success"] = "Villa successfully deleted";
                 return RedirectToAction(nameof(Index));
             }
             catch{
+                TempData["error"] = "Something went wrong!";
                 return View(villaObj);
             }
 
