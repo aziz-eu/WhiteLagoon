@@ -15,7 +15,9 @@
             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
             <div class="p-3">
                 <div class="form-floating col-12 py-1">
-                    <input asp-for="VillaId" class="form-control border shadow" />
+                    <select asp-for="VillaId" asp-items="@ViewData["villaList"] as IEnumerable<SelectListItem>" class="form-control border shadow" >
+                        <option disabled selected>Select Villa</option>
+                    </select>
                     <label asp-for="VillaId"></label>
                     <span asp-validation-for="VillaId" class="text-danger"></span>
                 </div>
