@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using WhiteLagoon.Domain.Entities;
 using WhiteLagoon.Infrastructure.Data;
+using WhiteLagoon.Web.Models.ViewModels;
 
 namespace WhiteLagoon.Web.Controllers
 {
@@ -16,31 +18,46 @@ namespace WhiteLagoon.Web.Controllers
         }
         public IActionResult Index()
         {
-            var villaNumbers = _db.VillaNumbers.ToList();
+            var villaNumbers = _db.VillaNumbers.Include(u=> u.Villa).ToList();
             return View(villaNumbers);
         }
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> list = _db.Villas.ToList().Select( u=> new SelectListItem
+            VillaNumberVM villaNumberVM = new VillaNumberVM()
             {
-                Text = u.Name,
-                Value = u.Id.ToString(),
-            });
-            ViewData["villaList"] = list;
-            return View();
+                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                })
+            };
+         
+            return View(villaNumberVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(VillaNumber obj)
+        public IActionResult Create(VillaNumberVM obj)
         {
             try
             {
+                bool isRoomExits = _db.VillaNumbers.Any(u => u.Villa_Number == obj.VillaNumber.Villa_Number);
+
+                if (isRoomExits)
+                {
+                    obj.VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                    {
+                        Text = u.Name, Value = u.Id.ToString()
+                    });;
+
+                    TempData["error"] = "Villa Already Exits";
+                    return View(obj);
+                }
                 //ModelState.Remove("Villa");
                 if (ModelState.IsValid)
                 {
 
-                    _db.VillaNumbers.Add(obj);
+                    _db.VillaNumbers.Add(obj.VillaNumber);
                     _db.SaveChanges();
                     TempData["success"] = "New Villa Number Add Successfully";
                     return RedirectToAction(nameof(Index));
@@ -106,7 +123,11 @@ namespace WhiteLagoon.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(Villa villaObj)
         {
+
             try{
+
+               
+
                 Villa? villa = _db.Villas.FirstOrDefault(u => u.Id == villaObj.Id);
                 if (villa == null)
                     return NotFound();
