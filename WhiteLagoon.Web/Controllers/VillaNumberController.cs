@@ -50,7 +50,7 @@ namespace WhiteLagoon.Web.Controllers
                         Text = u.Name, Value = u.Id.ToString()
                     });;
 
-                    TempData["error"] = "Villa Already Exits";
+                    TempData["error"] = "Villa Already Exits!";
                     return View(obj);
                 }
                 //ModelState.Remove("Villa");
@@ -63,40 +63,57 @@ namespace WhiteLagoon.Web.Controllers
                     return RedirectToAction(nameof(Index));
 
                 }
-                TempData["error"] = "Something went Wrong";
+                TempData["error"] = "Something went Wrong!";
                 return View(obj);
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Something went Wrong";
+                TempData["error"] = "Something went Wrong!";
                 return View(obj);
             }
         }
 
-        public IActionResult Update(int id)
+        public IActionResult Update(int villaNumberId)
         {
-           
-            Villa? villa = _db.Villas.FirstOrDefault(u=> u.Id == id);
-            if (villa == null)
+            VillaNumberVM? villaNumberVM = new VillaNumberVM()
+            {
+                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                { Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                VillaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)                
+            };
+
+            if(villaNumberVM.VillaNumber == null)
             {
                 return NotFound();
             }
-            return View(villa);
+          
+
+
+            return View(villaNumberVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(Villa obj)
+        public IActionResult Update(VillaNumberVM obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _db.Villas.Update(obj);
+                    _db.VillaNumbers.Update(obj.VillaNumber);
                     _db.SaveChanges();
-                    TempData["success"] = "Villa successfully Updated";
+                    TempData["success"] = "Villa Number successfully Updated";
                     return RedirectToAction(nameof(Index));
                 }
+
+                obj.VillaList = _db.Villas.ToList().Select(u=> new SelectListItem
+                {
+                    Value = u.Name,
+                    Text = u.Id.ToString()
+                });
+
                 TempData["error"] = "Something went Wrong";
                 return View(obj);
             }
@@ -107,39 +124,56 @@ namespace WhiteLagoon.Web.Controllers
             }
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int villaNumberId)
         {
-            Villa? villa = _db.Villas.FirstOrDefault(u=>u.Id == id);
 
-            if(villa == null) 
+
+
+            VillaNumberVM? villaNumberVM = new VillaNumberVM()
+            {
+                VillaList = _db.Villas.ToList().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                }),
+                VillaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == villaNumberId)
+        };
+            if(villaNumberVM == null)
+            {
                 return NotFound();
+            }
+           
 
-            return View(villa);
+            return View(villaNumberVM);
+
 
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Villa villaObj)
+        public IActionResult Delete(VillaNumberVM obj)
         {
 
             try{
 
-               
+                VillaNumber? villaNumber = _db.VillaNumbers.FirstOrDefault(u => u.Villa_Number == obj.VillaNumber.Villa_Number);           
 
-                Villa? villa = _db.Villas.FirstOrDefault(u => u.Id == villaObj.Id);
-                if (villa == null)
-                    return NotFound();
+               if(villaNumber is not null)
+                {
+                    _db.VillaNumbers.Remove(villaNumber);
+                    _db.SaveChanges();
+                    TempData["success"] = "Villa Number Deleted Successfully";
+                    return RedirectToAction(nameof(Index));
+                }
 
-                _db.Villas.Remove(villa);
-                _db.SaveChanges();
-                TempData["success"] = "Villa successfully deleted";
-                return RedirectToAction(nameof(Index));
+
+                TempData["error"] = "Something Went Wrong!";
+                return View(obj);
             }
             catch{
-                TempData["error"] = "Something went wrong!";
-                return View(villaObj);
+                TempData["error"] = "Something Went Wrong!";
+                return View(obj);
             }
 
         }
