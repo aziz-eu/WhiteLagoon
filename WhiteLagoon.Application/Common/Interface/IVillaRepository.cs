@@ -12,6 +12,6 @@ namespace WhiteLagoon.Application.Common.Interface
     {
      
         void Update(Villa Entity);
-        void Save();
+        
     }
 }

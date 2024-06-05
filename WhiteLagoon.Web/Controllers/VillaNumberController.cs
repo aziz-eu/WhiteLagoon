@@ -59,7 +59,7 @@ namespace WhiteLagoon.Web.Controllers
                 {
 
                     _unitOfWork.VillaNumber.Add(obj.VillaNumber);
-                    _unitOfWork.VillaNumber.Save();
+                    _unitOfWork.Save();
                     TempData["success"] = "New Villa Number Add Successfully";
                     return RedirectToAction(nameof(Index));
 
@@ -104,7 +104,7 @@ namespace WhiteLagoon.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     _unitOfWork.VillaNumber.Update(obj.VillaNumber);
-                    _unitOfWork.VillaNumber.Save();
+                    _unitOfWork.Save();
                     TempData["success"] = "Villa Number successfully Updated";
                     return RedirectToAction(nameof(Index));
                 }
@@ -163,7 +163,7 @@ namespace WhiteLagoon.Web.Controllers
                if(villaNumber is not null)
                 {
                     _unitOfWork.VillaNumber.Remove(villaNumber);
-                    _unitOfWork.VillaNumber.Save();
+                    _unitOfWork.Save();
                     TempData["success"] = "Villa Number Deleted Successfully";
                     return RedirectToAction(nameof(Index));
                 }
