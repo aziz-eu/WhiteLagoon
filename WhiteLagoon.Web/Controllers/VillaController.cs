@@ -40,12 +40,12 @@ namespace WhiteLagoon.Web.Controllers
                 {
                     if (obj.Image != null){
                         string fileName = Guid.NewGuid().ToString()+ Path.GetExtension(obj.Image.FileName);
-                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images\VillaImages");
+                        string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, @"images/VillaImages");
 
                         using (var fileStream = new  FileStream(Path.Combine( imagePath , fileName),FileMode.Create)){
 
                             obj.Image.CopyTo(fileStream);
-                            obj.ImageUrl = @"\images\VillaImages" + fileName;
+                            obj.ImageUrl = @"/images/VillaImages/" + fileName;
 
                         }
                     }
