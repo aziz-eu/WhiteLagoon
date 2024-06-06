@@ -16,6 +16,7 @@ namespace WhiteLagoon.Infrastructure.Data
         }
         public DbSet<Villa> Villas { get; set; }
         public DbSet<VillaNumber> VillaNumbers { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,6 +73,11 @@ namespace WhiteLagoon.Infrastructure.Data
                  }
 
                 ) ;
+            modelBuilder.Entity<Amenity>().HasData(
+                new Amenity { Id = 1, Name = "Private Pool", VillaId= 1 },
+                new Amenity { Id = 2, Name = "1 King Bed and 1 Sofa Set", VillaId = 1 }
+
+                );
         }
     }
 }
