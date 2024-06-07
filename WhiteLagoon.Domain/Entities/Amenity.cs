@@ -18,8 +18,9 @@ namespace WhiteLagoon.Domain.Entities
         public string Name { get; set; }
         public string? Description { get; set; }
         [ForeignKey(nameof(Villa))]
-        [ValidateNever]
+
         public int VillaId { get; set; }
+        [ValidateNever]
         public Villa Villa { get; set; }
     }
 }

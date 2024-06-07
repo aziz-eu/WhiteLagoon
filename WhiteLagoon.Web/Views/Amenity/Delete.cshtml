@@ -1,0 +1,66 @@
+﻿@model AmenityVM
+<div class="w-100 card border-0 p-4">
+    <div class="card-header bg-success bg-gradient ms-0 py-3">
+        <div class="row ">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Delete Amenity</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card-body border p-4">
+
+        <form method="post" class="row">
+
+            <input asp-for="@Model.Amenity.Id" hidden />
+
+            <div class="p-3">
+                <div class="form-floating col-12 py-1">
+                    <select disabled asp-for="@Model.Amenity.VillaId" asp-items="@Model.VillaList" class="form-control border shadow">
+                        <option disabled selected>Select Villa</option>
+                    </select>
+                    <label asp-for="@Model.Amenity.VillaId"></label>
+                </div>
+                <div class="form-floating col-12 py-1">
+                    <input disabled asp-for="@Model.Amenity.Name" class="form-control border shadow" />
+                    <label asp-for="@Model.Amenity.Name"></label>                </div>
+                <div class="form-floating col-12 py-1">
+                    <input disabled asp-for="@Model.Amenity.Description" class="form-control border shadow" />
+                    <label asp-for="@Model.Amenity.Description"></label>
+                  
+                </div>
+
+
+
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-danger w-100">
+                            Delete
+                        </button>
+
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Amenity" asp-action="Index" class="btn btn-secondary w-100">
+                            Cancel
+                        </a>
+
+                    </div>
+
+
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
